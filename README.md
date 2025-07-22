@@ -2,9 +2,6 @@
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/<YOUR-GH-HANDLE>/gemma3-4b-finetuning?style=for-the-badge&logo=github&color=gold)](https://github.com/<YOUR-GH-HANDLE>/gemma3-4b-finetuning/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/<YOUR-GH-HANDLE>/gemma3-4b-finetuning?style=for-the-badge&logo=github&color=blue)](https://github.com/<YOUR-GH-HANDLE>/gemma3-4b-finetuning/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/<YOUR-GH-HANDLE>/gemma3-4b-finetuning?style=for-the-badge&logo=github&color=red)](https://github.com/<YOUR-GH-HANDLE>/gemma3-4b-finetuning/issues)
 [![License](https://img.shields.io/github/license/<YOUR-GH-HANDLE>/gemma3-4b-finetuning?style=for-the-badge&color=green)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)

@@ -7,7 +7,7 @@
 [![Transformers](https://img.shields.io/badge/🤗-Transformers-yellow?style=for-the-badge)](https://huggingface.co)
 [![Unsloth](https://img.shields.io/badge/⚡-Unsloth-orange?style=for-the-badge)](https://unsloth.ai)
 
-**Production-ready fine-tuning pipeline for Gemma 3 4B with QLoRA, DPO & mobile deployment**
+**Production-ready fine-tuning pipeline for Gemma 3 4B with QLoR, DPO & mobile deployment**
 
 </div>
 

@@ -1,0 +1,60 @@
+{
+  "citation": "@inproceedings{rashkin2019towards,\n  title = {Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset},\n  author = {Hannah Rashkin and Eric Michael Smith and Margaret Li and Y-Lan Boureau},\n  booktitle = {ACL},\n  year = {2019},\n}",
+  "description": "PyTorch original implementation of Towards Empathetic Open-domain Conversation Models: a New Benchmark and Dataset",
+  "features": {
+    "instruction": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "response": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "source": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "domain": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "messages": [
+      {
+        "content": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "role": {
+          "dtype": "string",
+          "_type": "Value"
+        }
+      }
+    ],
+    "id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "system_prompt": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "question": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "text": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "https://github.com/facebookresearch/EmpatheticDialogues",
+  "license": ""
+}

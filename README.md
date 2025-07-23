@@ -1,138 +1,134 @@
-# 🚀 Gemma 3 4B Professional Fine-Tuning Pipeline
+# Fine-tuning Gemma 3 4B with Unsloth
 
-<div align="center">
+This guide provides a step-by-step approach to setting up and using a Conda environment with a GPU to fine-tune the Gemma 3 4B parameter model using Unsloth.
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
-[![Transformers](https://img.shields.io/badge/🤗-Transformers-yellow?style=for-the-badge)](https://huggingface.co)
-[![Unsloth](https://img.shields.io/badge/⚡-Unsloth-orange?style=for-the-badge)](https://unsloth.ai)
+## 1. Environment Setup Summary
 
-**Production-ready fine-tuning pipeline for Gemma 3 4B with QLoRA, DPO & mobile deployment**
+We have already completed the following steps:
 
-</div>
+1.  **Checked for GPU:** Verified the presence of an NVIDIA GeForce RTX 3070 with CUDA 12.9.
+2.  **Created Conda Environment:** Created a Conda environment named `unsloth_env` with Python 3.10.
+3.  **Installed Dependencies:** Installed all the necessary libraries, including `unsloth`, `torch`, `transformers`, and others, inside the `unsloth_env` environment.
+4.  **Generated `requirements.txt`:** Created a `requirements.txt` file listing all the installed packages for reproducibility.
 
-> ⭐ **If this project helps you, please give it a star – it really helps!** ⭐
+## 2. Activating the Conda Environment
 
----
-
-## 🌟 Key Features
-
-* **Multilingual Therapy Assistant** – Hindi, English + regional languages (Tamil 🇮🇳, Bengali 🇮🇳, Telugu 🇮🇳 …)
-* **5× Faster Training** – Unsloth kernels + QLoRA (4-bit) need **6 GB** VRAM
-* **Mobile-Ready** – 2.5 GB INT4 GGUF model ⇒ <100 ms latency on Snapdragon 8 Gen 3
-* **Safety by Design** – DPO alignment, crisis-keyword rules, on-device privacy
-* **Extensible** – Clean, config-driven codebase; add PPO, adapters or retrieval later
-
-## 📊 Benchmark Snapshot
-
-| Metric | Baseline | Ours |
-|-------:|---------:|-----:|
-| Training time | 24 h | **⏱ 4-6 h** |
-| VRAM needed | 32 GB | **6 GB** |
-| Model size | 16 GB | **2.5 GB** |
-| Inference latency | 150 ms | **< 50 ms** |
-| Capability retention | — | **≥ 95 %** |
-
-## 🏗️ Architecture
-
-```
-Raw-Data → Data-Prep → SFT (QLoRA) → DPO (Preference) → INT4 Quant → GGUF ⇢ Mobile
-```
-
-## 📂 Directory Layout
-
-```
-├── configs/               # YAML hyper-params
-│   ├── stage1_sft.yaml
-│   ├── stage2_dpo.yaml
-│   └── deploy.yaml
-├── data/
-│   ├── raw/              # DailyDialog, MedDialog, Hinglish …
-│   └── processed/        # train.jsonl / val.jsonl
-├── src/
-│   ├── data_prepare.py   # cleaning + crisis-tagging
-│   ├── train_sft.py      # QLoRA + Unsloth
-│   ├── train_dpo.py      # Direct Preference Optimisation
-│   └── deploy.py         # Merge LoRA, INT4 quant, GGUF export
-├── scripts/
-│   ├── setup_env.sh      # venv + deps
-│   └── run_pipeline.sh   # Stage 1-4 one-click
-├── notebooks/            # Colab tutorials
-├── requirements.txt
-└── README.md (you are here)
-```
-
-## 🚀 Quick Start
+To start using the environment, you need to activate it. Open your terminal and run the following command:
 
 ```bash
-# 1. Clone
-$ git clone https://github.com/YOUR-GH-HANDLE/gemma3-4b-finetuning.git
-$ cd gemma3-4b-finetuning
-
-# 2. Install & configure
-$ bash scripts/setup_env.sh          # venv + PyTorch + Unsloth + extras
-$ wandb login                         # if you want tracking (optional)
-
-# 3. Prepare data (Hindi, English, Tamil, Bengali)
-$ python src/data_prepare.py --input data/raw --output data/processed \
-      --languages hi en ta bn
-
-# 4. Stage 1 — Supervised fine-tune (QLoRA)
-$ python src/train_sft.py --config configs/stage1_sft.yaml \
-      --train data/processed/train.jsonl --val data/processed/val.jsonl \
-      --output models/sft
-
-# 5. Stage 2 — DPO alignment (5 k pref pairs)
-$ python src/train_dpo.py --config configs/stage2_dpo.yaml \
-      --sft_model models/sft --prefs data/processed/pairs.jsonl \
-      --output models/dpo
-
-# 6. Deployment — INT4 → GGUF mobile artefact
-$ python src/deploy.py --model_dir models/dpo --config configs/deploy.yaml
+conda activate unsloth_env
 ```
 
-## ⚙️ Configuration Highlights
+Your terminal prompt should now be prefixed with `(unsloth_env)`, indicating that the environment is active.
 
-* **stage1_sft.yaml** – LoRA r=16, α=16, 3 epochs, 4 grad-acc steps, 2e-4 LR.
-* **stage2_dpo.yaml** – β=0.1, loss-blend 0.7 DPO / 0.3 SFT, 1 epoch, 5e-7 LR.
-* **deploy.yaml** – int4 quant, GGUF export, mobile RAM ⩾ 3 GB.
+## 3. Verifying the GPU Setup
 
-## 🛡️ Safety Basics
+To ensure that PyTorch can correctly access and use your GPU, you can run the following Python script. Create a file named `verify_gpu.py` and add the following code:
 
-* Crisis keyword list → instant professional-help response.
-* DPO dataset: 5 000 crowd-labelled Hinglish helpful vs harmful pairs.
-* Post-filter regex removes disallowed content before output.
+```python
+import torch
 
-## 📱 Mobile Demo
+if torch.cuda.is_available():
+    print("GPU is available!")
+    print(f"Device count: {torch.cuda.device_count()}")
+    print(f"Current device: {torch.cuda.current_device()}")
+    print(f"Device name: {torch.cuda.get_device_name(0)}")
+else:
+    print("GPU is not available.")
+```
+
+Now, run the script from your terminal:
 
 ```bash
-ollama create gemma3-mvp -f models/mobile/gemma3_4b_therapy.gguf
-ollama run gemma3-mvp
+python verify_gpu.py
 ```
 
-Latency ~45 ms / token (Pixel 8 Pro, 8 GB RAM).
+If the setup is correct, you should see an output indicating that the GPU is available, along with its details.
 
-## 🗺️ Roadmap
+## 4. Deactivating the Conda Environment
 
-- **v1.1** 🔜 extra regional languages + rule-based toxicity filter.
-- **v2.0** vision/speech adapters, retrieval-augmented responses.
+Once you have finished your work, you can deactivate the Conda environment by running:
 
-## 🔄 After Fine-Tuning – Next Steps
+```bash
+conda deactivate
+```
 
-1. **Automated Test-Suite** – run `src/evaluate.py` for BLEU, ROUGE, safety.
-2. **Monitor in Prod** – integrate Prometheus & Grafana for latency + drift.
-3. **Collect Feedback** – thumbs-up/down, store in feedback DB for future DPO.
-4. **Gradual Roll-out** – blue-green deploy, A/B compare versus previous model.
-5. **Iterate** – if drift > 5 %, retrigger quick SFT with fresh data.
+This will return you to your system's default shell.
 
----
+## 5. `requirements.txt`
 
-## 🤝 Contributing
-Pull requests are welcome!  See [CONTRIBUTING.md](CONTRIBUTING.md).
+For reference, here is the content of the `requirements.txt` file, which you can use to reinstall the exact same environment in the future:
 
-## 📄 License
-MIT License – free for commercial & research use.
-
----
-
-> Built with ❤️ for the Indian AI community – give us a ⭐ if you like it!
+```
+accelerate==0.33.0
+aiohappyeyeballs==2.6.1
+aiohttp==3.12.14
+aiosignal==1.4.0
+async-timeout==5.0.1
+attrs==25.3.0
+bitsandbytes==0.43.2
+certifi==2025.7.14
+charset-normalizer==3.4.2
+datasets==2.20.0
+dill==0.3.8
+docstring_parser==0.17.0
+filelock==3.18.0
+frozenlist==1.7.0
+fsspec==2024.5.0
+hf-xet==1.1.5
+huggingface-hub==0.33.4
+idna==3.10
+Jinja2==3.1.6
+markdown-it-py==3.0.0
+MarkupSafe==3.0.2
+mdurl==0.1.2
+mpmath==1.3.0
+multidict==6.6.3
+multiprocess==0.70.16
+networkx==3.4.2
+numpy==1.26.4
+nvidia-cublas-cu12==12.1.3.1
+nvidia-cuda-cupti-cu12==12.1.105
+nvidia-cuda-nvrtc-cu12==12.1.105
+nvidia-cuda-runtime-cu12==12.1.105
+nvidia-cudnn-cu12==8.9.2.26
+nvidia-cufft-cu12==11.0.2.54
+nvidia-curand-cu12==10.3.2.106
+nvidia-cusolver-cu12==11.4.5.107
+nvidia-cusparse-cu12==12.1.0.106
+nvidia-nccl-cu12==2.20.5
+nvidia-nvjitlink-cu12==12.9.86
+nvidia-nvtx-cu12==12.1.105
+packaging==25.0
+pandas==2.3.1
+peft==0.12.0
+propcache==0.3.2
+psutil==7.0.0
+pyarrow==21.0.0
+pyarrow-hotfix==0.7
+Pygments==2.19.2
+python-dateutil==2.9.0.post0
+pytz==2025.2
+PyYAML==6.0.2
+regex==2024.11.6
+requests==2.32.4
+rich==14.0.0
+safetensors==0.5.3
+shtab==1.7.2
+six==1.17.0
+sympy==1.14.0
+tokenizers==0.20.3
+torch==2.3.1
+tqdm==4.67.1
+transformers==4.45.0
+triton==2.3.1
+trl==0.9.6
+typeguard==4.4.4
+typing_extensions==4.14.1
+tyro==0.9.26
+tzdata==2025.2
+unsloth @ git+https://github.com/unslothai/unsloth.git@3547416e16aec674e253ccba25cf0b1d9c2896c2
+urllib3==2.5.0
+xxhash==3.5.0
+yarl==1.20.1
+```

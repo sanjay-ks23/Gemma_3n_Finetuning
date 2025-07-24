@@ -55,7 +55,7 @@ Raw-Data → Data-Prep → SFT (QLoRA) → DPO (Preference) → INT4 Quant → G
 │   ├── train_dpo.py      # Direct Preference Optimisation
 │   └── deploy.py         # Merge LoRA, INT4 quant, GGUF export
 ├── scripts/
-│   ├── setup_env.sh      # venv + dep
+│   ├── setup_env.sh      # venv + deps
 │   └── run_pipeline.sh   # Stage 1-4 one-click
 ├── notebooks/            # Colab tutorials
 ├── requirements.txt

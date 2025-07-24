@@ -42,7 +42,7 @@ Raw-Data → Data-Prep → SFT (QLoRA) → DPO (Preference) → INT4 Quant → G
 ## 📂 Directory Layout
 
 ```
-├── configs/               # YAML hyper-param
+├── configs/               # YAML hyper-params
 │   ├── stage1_sft.yaml
 │   ├── stage2_dpo.yaml
 │   └── deploy.yaml

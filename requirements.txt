@@ -14,5 +14,5 @@ accelerate
 optuna
 optuna-dashboard
 
-# For 4-bit quantization
+
 bitsandbytes
